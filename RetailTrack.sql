@@ -2,24 +2,24 @@ CREATE DATABASE RetailTrack;
 USE RetailTrack;
 
 CREATE TABLE Users (
-    userID VARCHAR(6),
-    userName VARCHAR(25),
-    password VARCHAR(255),
-    role VARCHAR(10), -- Admin, Manager, Cashier
+    userID VARCHAR(6)  NOT NULL ,
+    userName VARCHAR(25) NOT NULL UNIQUE ,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(10)  NOT NULL CHECK IN(' Admin',' Manager', 'Cashier')
 
 	PRIMARY KEY (userID)
 );
 
 CREATE TABLE Categories (
-    categoryID VARCHAR(6),
-    categoryName VARCHAR(20),
+    categoryID VARCHAR(6) NOT NULL,
+    categoryName VARCHAR(20) NOT NULL UNIQUE,
 
 	PRIMARY KEY (categoryID)
 );
 
 CREATE TABLE Suppliers (
-    supplierID VARCHAR(6),
-    supplierName VARCHAR(25),
+    supplierID VARCHAR(6) NOT NULL,
+    supplierName VARCHAR(25) ) NOT NULL,
     phone VARCHAR(12),
     email VARCHAR(50),
     address VARCHAR(100),
@@ -28,20 +28,20 @@ CREATE TABLE Suppliers (
 );
 
 CREATE TABLE Items (
-    itemID VARCHAR(6),
-    name VARCHAR(25),
-    categoryID VARCHAR(6),
-    supplierID VARCHAR(6),
-    price FLOAT,
+    itemID VARCHAR(6)) NOT NULL,
+    name VARCHAR(25)) NOT NULL,
+    categoryID VARCHAR(6) ) NOT NULL,
+    supplierID VARCHAR(6)) NOT NULL,
+    price FLOAT  NOT NULL CHECK(price > 0) ,
 
 	PRIMARY KEY (itemID),
-    FOREIGN KEY (categoryID) REFERENCES Categories(categoryID),
+    FOREIGN KEY (categoryID) REFERENCES Categories(categoryID) on DELETE CASCADE,
     FOREIGN KEY (supplierID) REFERENCES Suppliers(supplierID)
 );
 
 CREATE TABLE Inventory (
-    inventoryID VARCHAR(6),
-    itemID VARCHAR(6),
+    inventoryID VARCHAR(6) ) NOT NULL,
+    itemID VARCHAR(6)) NOT NULL,
     quantity INT,
 	available INT,
 
@@ -49,13 +49,13 @@ CREATE TABLE Inventory (
     FOREIGN KEY (itemID) REFERENCES Items(itemID)
 );
 
-CREATE TABLE Buying (
-    buyingID VARCHAR(6),
+CREATE TABLE Billing (
+    billingID VARCHAR(6),
     userID VARCHAR(6),
     amount FLOAT,
     date DATE,
 
-	PRIMARY KEY(buyingID),
+	PRIMARY KEY(billingID),
     FOREIGN KEY (userID) REFERENCES Users(userID)
 );
 
