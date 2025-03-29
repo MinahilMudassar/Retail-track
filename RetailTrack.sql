@@ -2,12 +2,10 @@ CREATE DATABASE RetailTrack;
 USE RetailTrack;
 
 CREATE TABLE Users (
-    userID VARCHAR(6)  NOT NULL ,
+    userID VARCHAR(6) PRIMARY KEY,
     userName VARCHAR(25) NOT NULL UNIQUE ,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(10)  NOT NULL CHECK IN(' Admin',' Manager', 'Cashier')
-
-	PRIMARY KEY (userID)
+    role VARCHAR(10)  NOT NULL CHECK IN (' Admin',' Manager', 'Cashier')
 );
 
 CREATE TABLE Categories (
