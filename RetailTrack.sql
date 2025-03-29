@@ -2,7 +2,7 @@ CREATE DATABASE RetailTrack;
 USE RetailTrack;
 
 CREATE TABLE Users (
-    userID VARCHAR(6) PRIMARY KEY,
+    userID VARCHAR(6) identity(1,1) PRIMARY KEY,
     userName VARCHAR(25) NOT NULL UNIQUE ,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(10)  NOT NULL CHECK IN (' Admin',' Manager', 'Cashier')
