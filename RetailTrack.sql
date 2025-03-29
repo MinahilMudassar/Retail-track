@@ -67,3 +67,18 @@ CREATE TABLE Reports (
     PRIMARY KEY (reportID),
     FOREIGN KEY (generatedBy) REFERENCES Users(userID) ON DELETE SET NULL
 );
+GO
+GO
+CREATE TRIGGER trg_before_insert_users
+ON Users
+INSTEAD OF INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Users (userID, userName, password, role)
+    SELECT 
+        'US' + RIGHT('0000' + CAST(ISNULL((SELECT MAX(CAST(RIGHT(userID, 4) AS INT)) FROM Users), 1000) + ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS VARCHAR(4)), 4),
+        i.userName, i.password, i.role
+    FROM inserted i;
+END;
