@@ -31,7 +31,7 @@ CREATE TABLE Items (
     name VARCHAR(25) NOT NULL,
     categoryID VARCHAR(6) NOT NULL,
     supplierID VARCHAR(6) NOT NULL,
-    price FLOAT NOT NULL CHECK (price > 0) ,
+    price FLOAT NOT NULL default 0 CHECK (price >= 0) ,
 
 	PRIMARY KEY (itemID),
     FOREIGN KEY (categoryID) REFERENCES Categories(categoryID) on DELETE CASCADE,
@@ -41,38 +41,29 @@ CREATE TABLE Items (
 CREATE TABLE Inventory (
     inventoryID VARCHAR(6) NOT NULL,
     itemID VARCHAR(6) NOT NULL,
-    quantity INT,
-	available INT,
-
-	PRIMARY KEY (inventoryID),
-    FOREIGN KEY (itemID) REFERENCES Items(itemID)
+    quantity INT default 0,
+	available INT default 0,
+	 PRIMARY KEY (inventoryID),
+    FOREIGN KEY (itemID) REFERENCES Items(itemID) ON DELETE CASCADE
 );
 
 CREATE TABLE Billing (
-    billingID VARCHAR(6),
-    userID VARCHAR(6),
-    amount FLOAT,
-    date DATE,
+    billingID VARCHAR(6) NOT NULL,
+    userID VARCHAR(6) NOT NULL,
+    amount FLOAT NOT NULL CHECK (amount >= 0),
+    date DATE NOT NULL DEFAULT CURRENT_DATE,
 
 	PRIMARY KEY(billingID),
-    FOREIGN KEY (userID) REFERENCES Users(userID)
+    FOREIGN KEY (userID) REFERENCES Users(userID) ON DELETE SET NULL
 );
+
 
 CREATE TABLE Reports (
--------------------------helllo testing
-    reportID INT,
-    type VARCHAR(20),
-    date DATE,
-    generatedBy VARCHAR(6),
+    reportID INT NOT NULL ,
+    type VARCHAR(20) NOT NULL,
+    reportdate DATE NOT NULL DEFAULT CURRENT_DATE,
+    generatedBy VARCHAR(6) NOT NULL,
 
-	PRIMARY KEY (reportID),
-    FOREIGN KEY (generatedBy) REFERENCES Users(userID)
+    PRIMARY KEY (reportID),
+    FOREIGN KEY (generatedBy) REFERENCES Users(userID) ON DELETE SET NULL
 );
-
-DROP TABLE Reports;
-DROP TABLE Billing;
-DROP TABLE Inventory;
-DROP TABLE Items;
-DROP TABLE Suppliers;
-DROP TABLE Categories;
-DROP TABLE Users;
