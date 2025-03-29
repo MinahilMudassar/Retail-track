@@ -2,11 +2,12 @@ CREATE DATABASE RetailTrack;
 USE RetailTrack;
 
 CREATE TABLE Users (
-    userID VARCHAR(6) identity(1,1) PRIMARY KEY,
+    userID VARCHAR(6) PRIMARY KEY,
     userName VARCHAR(25) NOT NULL UNIQUE ,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(10)  NOT NULL CHECK IN (' Admin',' Manager', 'Cashier')
+    role VARCHAR(10) NOT NULL CHECK (role IN ('Admin', 'Manager', 'Cashier'))
 );
+
 
 CREATE TABLE Categories (
     categoryID VARCHAR(6) NOT NULL,
@@ -17,7 +18,7 @@ CREATE TABLE Categories (
 
 CREATE TABLE Suppliers (
     supplierID VARCHAR(6) NOT NULL,
-    supplierName VARCHAR(25) ) NOT NULL,
+    supplierName VARCHAR(25) NOT NULL,
     phone VARCHAR(12),
     email VARCHAR(50),
     address VARCHAR(100),
@@ -26,11 +27,11 @@ CREATE TABLE Suppliers (
 );
 
 CREATE TABLE Items (
-    itemID VARCHAR(6)) NOT NULL,
-    name VARCHAR(25)) NOT NULL,
-    categoryID VARCHAR(6) ) NOT NULL,
-    supplierID VARCHAR(6)) NOT NULL,
-    price FLOAT  NOT NULL CHECK(price > 0) ,
+    itemID VARCHAR(6) NOT NULL,
+    name VARCHAR(25) NOT NULL,
+    categoryID VARCHAR(6) NOT NULL,
+    supplierID VARCHAR(6) NOT NULL,
+    price FLOAT NOT NULL CHECK (price > 0) ,
 
 	PRIMARY KEY (itemID),
     FOREIGN KEY (categoryID) REFERENCES Categories(categoryID) on DELETE CASCADE,
@@ -38,8 +39,8 @@ CREATE TABLE Items (
 );
 
 CREATE TABLE Inventory (
-    inventoryID VARCHAR(6) ) NOT NULL,
-    itemID VARCHAR(6)) NOT NULL,
+    inventoryID VARCHAR(6) NOT NULL,
+    itemID VARCHAR(6) NOT NULL,
     quantity INT,
 	available INT,
 
@@ -66,3 +67,11 @@ CREATE TABLE Reports (
 	PRIMARY KEY (reportID),
     FOREIGN KEY (generatedBy) REFERENCES Users(userID)
 );
+
+DROP TABLE Reports;
+DROP TABLE Billing;
+DROP TABLE Inventory;
+DROP TABLE Items;
+DROP TABLE Suppliers;
+DROP TABLE Categories;
+DROP TABLE Users;
